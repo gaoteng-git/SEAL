@@ -5,14 +5,14 @@
 
 # -------- Environment ------------------------------------------------ #
 # export HOME=<your_home_directory>
-source ~/.bashrc
-conda activate seal_env
-cd ~/SEAL
+# source ~/.bashrc
+# conda activate seal_env
+# cd ~/SEAL
 
 # -------- User-editable ---------------------------------------------- #
 MODEL_NAME="Qwen/Qwen2.5-7B"  # HF model name or path to RL checkpoint (e.g. models/iter1)
 VLLM_SERVER_GPUS="0"
-INNER_LOOP_GPU="1"
+INNER_LOOP_GPU="0"
 PORT=8001
 ZMQ_PORT=5555
 
@@ -41,6 +41,7 @@ CUDA_VISIBLE_DEVICES=${VLLM_SERVER_GPUS} vllm serve "${MODEL_NAME}" \
     --enable-lora \
     --max-lora-rank ${MAX_LORA_RANK} \
     --trust-remote-code \
+    --gpu-memory-utilization 0.4 \
     > "logs/${SLURM_JOB_ID}_vllm_server.log" 2>&1 &
 
 VLLM_PID=$!

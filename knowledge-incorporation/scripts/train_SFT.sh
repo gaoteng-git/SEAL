@@ -30,7 +30,7 @@ LOG_STEPS=1
 
 echo "Launching SFT run on $(hostname)..."
 accelerate launch \
-    --num_processes 2 \
+    --num_processes 1 \
     --deepspeed_config_file knowledge-incorporation/src/EM/config/deepspeed_stage3.json \
     --mixed_precision bf16 \
     knowledge-incorporation/src/EM/train_SFT.py \
