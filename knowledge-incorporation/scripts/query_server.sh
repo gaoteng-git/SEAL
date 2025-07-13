@@ -13,7 +13,7 @@
 SERVER_HOST="127.0.0.1"  # set to TTT server IP
 ZMQ_PORT=5555
 
-OUTPUT_DIR="knowledge-incorporation/results/query_server_trained6"
+OUTPUT_DIR="knowledge-incorporation/results/query_server_trained7"
 mkdir -p "${OUTPUT_DIR}"
 
 # -------- Experiment Grid -------------------------------------------- #
