@@ -1,0 +1,4 @@
+Requesting 1000 completions in one batch...
+Received in 40.5s
+Saved → knowledge-incorporation/data/synthetic_data/eval/qwen_gaoteng_qa_val.json  (200 records)
+meta → knowledge-incorporation/data/synthetic_data/eval/qwen_gaoteng_qa_val.json.meta
