@@ -179,6 +179,7 @@ def build_train_sequences(
     - each example is prefixed with the title
     - if the second sequence begins with "1.", remove the first one
     """
+    """
     segs = _split_segments(completion_raw) or [completion_raw.strip()]
     if split_newlines:
         if re.search(r'Question\s+\d+:', completion_raw) and re.search(r'Answer\s*:', completion_raw): 
@@ -194,5 +195,7 @@ def build_train_sequences(
             if len(segs) > 1 and segs[1].startswith("1."):
                 segs = segs[1:]
     seqs = [TRAINING_SEQUENCE_TEMPLATE.format(title=title, completion_text=s) for s in segs]
+    """
+    seqs = []
     seqs.append(TRAINING_SEQUENCE_TEMPLATE.format(title=title, completion_text=context.strip()))
     return seqs
