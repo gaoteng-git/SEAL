@@ -1,0 +1,13 @@
+Sent request to TTT server (attempt 1/2, waiting ≤10 min)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 321, in <module>
+    main()
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 213, in main
+    stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, train_q_id, args)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 160, in evaluate_completion
+    "baseline_answer": rep["baseline_texts"][qi],
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^
+IndexError: list index out of range

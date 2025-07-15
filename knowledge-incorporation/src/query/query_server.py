@@ -119,9 +119,13 @@ def send_round_trip(
     # if we reach here every attempt failed
     raise RuntimeError(f"TTT server unreachable after {max_retries} attempts")
 
-def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args):
+def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, train_question_id, args):
     """Run `eval_times` fine-tune / eval cycles for one completion."""
     title, context = item["title"], item["context"]
+    other_questions = []
+    for index, q in enumerate(item["questions"]):
+        if index != train_question_id:
+            other_questions.append(q)
     questions = [
         {
             "title": title,
@@ -129,11 +133,11 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
             "question": f"Topic: {title}\n{q['question']}",
             "answer": q["answer"],
         }
-        for q in item["questions"]
+        for q in other_questions
     ]
     train_sequences = build_train_sequences(comp_raw, context, title, split_newlines=args.split_newlines)
-    train_sequences = [train_sequences[-1]]
-    q = item["questions"][0]
+    # train_sequences = [train_sequences[-1]]
+    q = item["questions"][train_question_id]
     train_sequences.append(f"Question:{q['question']}\nAnswer:{q['answer']}")
 
     base_accs, adpt_accs, gains = [], [], []
@@ -147,7 +151,7 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         gains.append(rep["adapter_gain"])
 
         q_details_rep = []
-        for qi, q in enumerate(item["questions"]):
+        for qi, q in enumerate(other_questions):
             q_details_rep.append(
                 {
                     "rep": i,
@@ -205,11 +209,8 @@ def main() -> None:
         completions = [c for c in completions if c.strip()][: args.k_completions]
         comp_entries: List[Dict[str, Any]] = []
         for comp_idx, comp_raw in enumerate(completions):
-            backup_questions = item["questions"]
-            for q in backup_questions:
-                item["questions"] = [q]
-                stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
-                item["questions"] = backup_questions
+            for train_q_id, q in enumerate(item["questions"]):
+                stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, train_q_id, args)
                 completion_run_std_list.append(stats["adapter_std"])
                 comp_entries.append(
                     {
