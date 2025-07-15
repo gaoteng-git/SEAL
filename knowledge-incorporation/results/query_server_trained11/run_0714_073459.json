@@ -1,0 +1,28 @@
+{
+  "overall": {
+    "baseline_mean_accuracy": 0.0,
+    "baseline_std_of_article_means": 0.0,
+    "adapter_mean_accuracy": 0.0,
+    "adapter_std_of_article_means": 0.0,
+    "mean_adapter_std_over_completions": 0.0,
+    "mean_adapter_std_within_completions": 0.0,
+    "mean_gain": 0.0
+  },
+  "timestamp": "0714_073459",
+  "exp_name": "eval_baseline",
+  "dataset": "knowledge-incorporation/data/synthetic_data/eval/base_val.json",
+  "split_newlines": true,
+  "n_articles": 0,
+  "k_completions": 1,
+  "eval_times": 1,
+  "lora_params": {
+    "rank": 32,
+    "alpha": 64,
+    "dropout": 0.0,
+    "epochs": 10,
+    "lr": 0.001,
+    "batch_size": 1,
+    "grad_accum_steps": 1
+  },
+  "articles": []
+}

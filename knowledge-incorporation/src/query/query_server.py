@@ -132,6 +132,9 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         for q in item["questions"]
     ]
     train_sequences = build_train_sequences(comp_raw, context, title, split_newlines=args.split_newlines)
+    train_sequences = [train_sequences[-1]]
+    q = item["questions"][0]
+    train_sequences.append(f"Question:{q['question']}\nAnswer:{q['answer']}")
 
     base_accs, adpt_accs, gains = [], [], []
     q_details: List[Dict[str, Any]] = []
@@ -202,20 +205,24 @@ def main() -> None:
         completions = [c for c in completions if c.strip()][: args.k_completions]
         comp_entries: List[Dict[str, Any]] = []
         for comp_idx, comp_raw in enumerate(completions):
-            stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
-            completion_run_std_list.append(stats["adapter_std"])
-            comp_entries.append(
-                {
-                    "text": comp_raw,
-                    "stats": stats,
-                    "questions": q_details
-                }
-            )
+            backup_questions = item["questions"]
+            for q in backup_questions:
+                item["questions"] = [q]
+                stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
+                item["questions"] = backup_questions
+                completion_run_std_list.append(stats["adapter_std"])
+                comp_entries.append(
+                    {
+                        "text": comp_raw,
+                        "stats": stats,
+                        "questions": q_details
+                    }
+                )
 
-            print(f"[{art_idx:02d}.{comp_idx:02d}] "
-                  f"base {stats['baseline_mean']*100:.2f}% | "
-                  f"adapter {stats['adapter_mean']*100:.2f}% ± {stats['adapter_std']*100:.2f}% "
-                  f"gain {stats['gain_mean']*100:+.2f}%")
+                print(f"[{art_idx:02d}.{comp_idx:02d}] "
+                      f"base {stats['baseline_mean']*100:.2f}% | "
+                      f"adapter {stats['adapter_mean']*100:.2f}% ± {stats['adapter_std']*100:.2f}% "
+                      f"gain {stats['gain_mean']*100:+.2f}%")
 
         # article-level aggregates
         base_mean_article  = _stats.mean(c["stats"]["baseline_mean"] for c in comp_entries)
