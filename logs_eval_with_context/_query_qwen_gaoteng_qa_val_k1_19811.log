@@ -1,0 +1,18 @@
+Sent request to TTT server (attempt 1/2, waiting ≤10 min)
+TTT server error: NameError: name 'adapter_name' is not defined
+Sent request to TTT server (attempt 2/2, waiting ≤10 min)
+TTT server error: NameError: name 'adapter_name' is not defined
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 322, in <module>
+    main()
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 214, in main
+    stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 149, in evaluate_completion
+    rep = send_round_trip(ctx, endpoint, train_sequences, questions, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 120, in send_round_trip
+    raise RuntimeError(f"TTT server unreachable after {max_retries} attempts")
+RuntimeError: TTT server unreachable after 2 attempts

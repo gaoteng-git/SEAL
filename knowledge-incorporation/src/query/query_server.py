@@ -61,7 +61,7 @@ def parse_args() -> argparse.Namespace:
 def send_round_trip(
     ctx: zmq.Context,
     endpoint: str,
-    train_sequences: List[str],
+    train_sequences: List[Dict[str, str]],
     questions: List[Dict[str, str]],
     args: argparse.Namespace,
     max_retries: int = 2,
@@ -131,7 +131,16 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         }
         for q in item["questions"]
     ]
-    train_sequences = build_train_sequences(comp_raw, context, title, split_newlines=args.split_newlines)
+    # train_sequences = build_train_sequences(comp_raw, context, title, split_newlines=args.split_newlines)
+    train_sequences = [
+        {
+            "title": title,
+            "context": context,
+            "question": f"Context: {context}\nTopic: {title}\n{q['question']}",
+            "answer": q["answer"],
+        }
+        for q in item["questions"]
+    ]
 
     base_accs, adpt_accs, gains = [], [], []
     q_details: List[Dict[str, Any]] = []

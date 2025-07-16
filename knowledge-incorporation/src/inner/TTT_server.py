@@ -198,6 +198,7 @@ def main():
                     step += 1
                     continue
 
+                """
                 # ---------- prepare LoRA fine-tune dataset -------------------------- #
                 tmp_tag = f"inner_TTT_{step}"
                 tmp_dir = Path(f"models/tmp_{args.zmq_port}_{tmp_tag}")
@@ -287,6 +288,15 @@ def main():
                     stop_ids=stop_ids,
                     instruct_model=args.instruct_model,
                 )
+                """
+
+                adapter_acc, adapter_texts, adapter_ok = accuracy_and_texts(
+                    train_sequences,  # gaoteng: questions with context
+                    answer_model_ref=args.model,
+                    sampling=sampling_cfg,
+                    stop_ids=stop_ids,
+                    instruct_model=args.instruct_model,
+                )
 
                 gains = [
                     1  if a and not b else
@@ -295,10 +305,12 @@ def main():
                     for b, a in zip(base_ok, adapter_ok)
                 ]
 
+                """
                 unload_adapter(adapter_name)
                 if not args.keep_adapter_dir:
                     shutil.rmtree(tmp_dir, ignore_errors=True)
                 gc.collect();  torch.cuda.empty_cache()
+                """
 
                 reply = {
                     "baseline_accuracy": round(base_acc, 4),
