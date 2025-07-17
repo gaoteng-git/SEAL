@@ -1,0 +1,13 @@
+Sent request to TTT server (attempt 1/2, waiting ≤10 min)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 334, in <module>
+    main()
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 220, in main
+    stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/root/gaoteng/git/SEAL/knowledge-incorporation/src/query/query_server.py", line 152, in evaluate_completion
+    if len(rep["baseline_texts"][qi]) < question_num or len(rep["adapter_texts"]) < question_num or len(rep["baseline_correct"]) < question_num or len(rep["adapter_correct"]) < question_num:
+                                 ^^
+UnboundLocalError: cannot access local variable 'qi' where it is not associated with a value

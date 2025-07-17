@@ -13,13 +13,13 @@
 SERVER_HOST="127.0.0.1"  # set to TTT server IP
 ZMQ_PORT=5555
 
-OUTPUT_DIR="knowledge-incorporation/results/query_server_trained15"
+OUTPUT_DIR="knowledge-incorporation/results/query_server_trained18"
 mkdir -p "${OUTPUT_DIR}"
 
 # -------- Experiment Grid -------------------------------------------- #
 # Columns: exp_name dataset  k  evalT  r  α  drop  ep  lr  bs  ga  n_articles
 EXPERIMENTS=(
-	"eval_baseline knowledge-incorporation/data/synthetic_data/eval/qwen_gaoteng_qa_val.json  1  1  32  64  0  10  1e-3  1  1 200"
+	"eval_baseline knowledge-incorporation/data/synthetic_data/eval/qwen_gaoteng_val.json  1  1  32  64  0  10  1e-3  1  1 200"
 )
 
 SPLIT_NEWLINES=true  # whether to split newlines into separate training documents

@@ -136,7 +136,7 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         {
             "title": title,
             "context": context,
-            "question": f"Context: {context}\nTopic: {title}\n{q['question']}",
+            "question": f"Context: {context}\nImplications: {comp_raw}\nTopic: {title}\n{q['question']}",
             "answer": q["answer"],
         }
         for q in item["questions"]
@@ -147,6 +147,11 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
 
     for i in range(args.eval_times):
         rep = send_round_trip(ctx, endpoint, train_sequences, questions, args)
+
+        question_num = len(item["questions"])
+        if len(rep["baseline_texts"]) < question_num or len(rep["adapter_texts"]) < question_num or len(rep["baseline_correct"]) < question_num or len(rep["adapter_correct"]) < question_num:
+            print("ERROR: rep length is less than question number!")
+            return None, None
 
         base_accs.append(rep["baseline_accuracy"])
         adpt_accs.append(rep["adapter_accuracy"])
@@ -210,8 +215,12 @@ def main() -> None:
         )
         completions = [c for c in completions if c.strip()][: args.k_completions]
         comp_entries: List[Dict[str, Any]] = []
+        is_error = False
         for comp_idx, comp_raw in enumerate(completions):
             stats, q_details = evaluate_completion(ctx, endpoint, item, comp_raw, args)
+            if stats is None and q_details is None:
+                is_error = True
+                break
             completion_run_std_list.append(stats["adapter_std"])
             comp_entries.append(
                 {
@@ -225,6 +234,9 @@ def main() -> None:
                   f"base {stats['baseline_mean']*100:.2f}% | "
                   f"adapter {stats['adapter_mean']*100:.2f}% ± {stats['adapter_std']*100:.2f}% "
                   f"gain {stats['gain_mean']*100:+.2f}%")
+
+        if is_error:
+            continue
 
         # article-level aggregates
         base_mean_article  = _stats.mean(c["stats"]["baseline_mean"] for c in comp_entries)
