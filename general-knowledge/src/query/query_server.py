@@ -137,7 +137,7 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         }
         for q in item["questions"]
     ]
-    train_sequences = build_train_sequences_rc(comp_raw, context, title, split_newlines=args.split_newlines)
+    train_sequences = build_train_sequences_rc(questions[0])
 
     base_accs, adpt_accs, gains = [], [], []
     q_details: List[Dict[str, Any]] = []
