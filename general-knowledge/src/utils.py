@@ -104,11 +104,16 @@ def generate(
 
 # -------------------  SQUAD HELPERS  ---------------------------------- #
 def format_answer_prompts(q_batch: List[Dict[str, str]], instruct_model: bool, chain_of_thought: bool = False) -> List[str]:
-    if chain_of_thought:
-        SQUAD_ANSWER_TEMPLATE = SQUAD_ANSWER_TEMPLATE_BASE_COT
-    else:
-        SQUAD_ANSWER_TEMPLATE = SQUAD_ANSWER_TEMPLATE_QWEN_INSTRUCT if instruct_model else SQUAD_ANSWER_TEMPLATE_BASE
-    return [SQUAD_ANSWER_TEMPLATE.format(question=q["question"]) for q in q_batch]
+    SQUAD_ANSWER_TEMPLATE = (
+        "{title}\n"
+        "{context}\n"
+        "Let's answer a question directly and concisely.\n"
+        "Question: {question}\n"
+        "Answer:"
+    )
+    return [SQUAD_ANSWER_TEMPLATE.format(title=q["title"],
+                                         context=q["context"],
+                                         question=q["question"]) for q in q_batch]
 
 
 def format_grade_prompts(
@@ -248,7 +253,7 @@ def build_train_sequences_rc(
         "{context}\n"
         "Let's answer a question directly and concisely.\n"
         "Question: {question}\n"
-        "Answer:\n"
+        "Answer:"
         "{answer}"
     )
     seq = TRAINING_SEQUENCE_TEMPLATE_RC.format(title=title, context=context, question=question, answer=answer)

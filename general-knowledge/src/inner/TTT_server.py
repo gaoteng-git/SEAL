@@ -1,8 +1,8 @@
 # general-knowledge/src/inner/TTT_server.py
 """
 Inner-loop Test-Time Training (TTT) server used by SEAL's outer-loop drivers
-(`query_server.py`, `CPT.py`, `continual_self_edits.py`) to rapidly fine-tune 
-a temporary LoRA adapter on a handful of synthetic sequences and immediately 
+(`query_server.py`, `CPT.py`, `continual_self_edits.py`) to rapidly fine-tune
+a temporary LoRA adapter on a handful of synthetic sequences and immediately
 evaluate it on corresponding SQuAD questions, without the sequences in context.
 
 The server is stateless across requests: every JSON message describes a complete round consisting of
@@ -243,6 +243,7 @@ def main():
                 tmp_dir = Path(f"models/tmp_{args.zmq_port}_{tmp_tag}")
                 os.makedirs(tmp_dir, exist_ok=True)
 
+                LOG.info("gaoteng: end_mask_substring=" + str(end_mask_substring))
                 rows = []
                 sub_ids = (
                     tokenizer.encode(end_mask_substring, add_special_tokens=False)
@@ -250,6 +251,7 @@ def main():
                 )
 
                 for idx, seq in enumerate(train_sequences):
+                    LOG.info("gaoteng: seq=" + str(seq))
                     tok = tokenizer(
                         seq,
                         truncation=True,

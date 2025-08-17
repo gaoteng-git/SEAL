@@ -61,7 +61,7 @@ for EXP in "${EXPERIMENTS[@]}"; do
         --batch_size "${BATCH_SIZE}" \
         --gradient_accumulation_steps "${GRAD_ACC}" \
         --reward_mode "${REWARD_MODE}" \
-        --end_mask_substring "Answer:\n" \
+        --end_mask_substring "Answer:" \
         ${SN_FLAG} \
         ${COT_FLAG} \
         >> "${LOG_FILE}" 2>&1
