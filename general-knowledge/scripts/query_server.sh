@@ -16,7 +16,7 @@ mkdir -p "${OUTPUT_DIR}"
 # -------- Experiment Grid -------------------------------------------- #
 # Columns: exp_name dataset  k  evalT  r  α  drop  ep  lr  bs  ga  n_articles
 EXPERIMENTS=(
-    "eval_baseline knowledge-incorporation/data/synthetic_data/eval/qwen_gaoteng_val.json  1  1  32  64  0  10  1e-3  1  1 200"
+    "eval_baseline  general-knowledge/data/synthetic_data/eval/qwen_gaoteng_val.json  1  1  32  64  0  10  1e-3  1  1 200"
 )
 
 CHAIN_OF_THOUGHT=0  # whether to use chain of thought when answering
