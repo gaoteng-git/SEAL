@@ -105,9 +105,12 @@ def generate(
 # -------------------  SQUAD HELPERS  ---------------------------------- #
 def format_answer_prompts(q_batch: List[Dict[str, str]], instruct_model: bool, chain_of_thought: bool = False) -> List[str]:
     SQUAD_ANSWER_TEMPLATE = (
-        "{title}\n"
-        "{context}\n"
-        "Let's answer a question directly and concisely.\n"
+        "You are given an reading comprehension task."
+        "Given the below article, please read it carefully and remember all details."
+        "Then you are given a question, please refer to the given article and answer the question.\n"
+        "article title: {title}\n"
+        "article: {context}\n"
+        "Now let's answer a question directly and concisely.\n"
         "Question: {question}\n"
         "Answer:"
     )
@@ -249,9 +252,12 @@ def build_train_sequences_rc(
     question = question_dict["question"]
     answer = question_dict["answer"]
     TRAINING_SEQUENCE_TEMPLATE_RC = (
-        "{title}\n"
-        "{context}\n"
-        "Let's answer a question directly and concisely.\n"
+        "You are given an reading comprehension task."
+        "Given the below article, please read it carefully and remember all details."
+        "Then you are given a question, please refer to the given article and answer the question.\n"
+        "article title: {title}\n"
+        "article: {context}\n"
+        "Now let's answer a question directly and concisely.\n"
         "Question: {question}\n"
         "Answer:"
         "{answer}"
