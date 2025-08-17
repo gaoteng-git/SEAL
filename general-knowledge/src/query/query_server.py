@@ -1,8 +1,8 @@
 # src/query/query_server.py
 """
 Query TTT server on SQuAD synthetic data. This drives the inner-loop TTT server:
-sample k synthetic completions per article, run `eval_times` fine-tune+eval 
-cycles, and write an aggregated JSON report. This is used in both ReST-EM 
+sample k synthetic completions per article, run `eval_times` fine-tune+eval
+cycles, and write an aggregated JSON report. This is used in both ReST-EM
 training and evaluation with n=1.
 
 The results are written to a JSON file. The overall summary contains:
@@ -10,12 +10,12 @@ The results are written to a JSON file. The overall summary contains:
     baseline_std_of_article_means         - std-dev across those means
     adapter_mean_accuracy                 - mean of article-level adapter means
     adapter_std_of_article_means          - std-dev across those means
-    mean_adapter_std_over_completions     - average per-article adapter std-dev 
+    mean_adapter_std_over_completions     - average per-article adapter std-dev
                                             (across the k completions);
                                             higher ⇒ more variance the RL selector
                                             can exploit
     mean_adapter_std_within_completions   - avg std-dev within each completion,
-                                            across TTT eval runs; 
+                                            across TTT eval runs;
                                             lower ⇒ more stable signal
     mean_gain                             - adapter_mean - baseline_mean
 
@@ -138,6 +138,7 @@ def evaluate_completion(ctx, endpoint, item: Dict[str, Any], comp_raw: str, args
         for q in item["questions"]
     ]
     train_sequences = build_train_sequences(comp_raw, context, title, split_newlines=args.split_newlines)
+
 
     base_accs, adpt_accs, gains = [], [], []
     q_details: List[Dict[str, Any]] = []
