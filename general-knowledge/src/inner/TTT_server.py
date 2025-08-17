@@ -274,7 +274,7 @@ def main():
                                         marker_pos + "<<<MASK_END>>>",
                                         1
                                     )
-                                    LOG.info("TRAIN[%d] %s", idx, debug_str)
+                                    LOG.info("TRAIN only tail [%d] %s", idx, debug_str)
                                 # ---------------------------------------------------
                                 break
                     if idx < 3 and not sub_ids:  # no masking substring given; default
